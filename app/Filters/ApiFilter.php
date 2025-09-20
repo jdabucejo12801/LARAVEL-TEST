@@ -1,42 +1,17 @@
 <?php
 
-namespace App\Filters\V1;
+namespace App\Filters;
 
 use Illuminate\Http\Request;
 
 
 class ApiFilter {
-    protected $safeParams = [
-        'name' => ['eq'],
-        'type' => ['eq'],
-        'email' => ['eq'],
-        'address' => ['eq'],
-        'city' => ['eq'],
-        'state' => ['eq'],
-        'postalCode' => ['eq','gt','lt']
-    ];
+    protected $safeParams = [];
+    protected $columnMap = [];
 
-    protected $columnMap = [
-        'postalCode' => 'postal_code'
-    ];
+    protected $operatorMap = [];
 
-   protected function operatorMap($operator)
-{
-    switch ($operator) {
-        case 'eq':
-            return '=';
-        case 'lt':
-            return '<';
-        case 'lte':
-            return '<=';
-        case 'gt':
-            return '>';
-        case 'gte':
-            return '>=';
-        default:
-            return null;
-    }
-}
+
     public function transform(Request $request) {
         $eloQuery = [];
 
@@ -50,11 +25,12 @@ class ApiFilter {
 
             foreach ($operators as $operator) {
                 if(isset($query[$operator])) {
-                    $eloQuery[] = [$column, self::operatorMap($operator), $query[$operator]];
+                $eloQuery[] = [$column, $this->operatorMap[$operator],$query[$operator]];
+                }
+               
             
             }
             return $eloQuery;
         }
 }   
-}
 }

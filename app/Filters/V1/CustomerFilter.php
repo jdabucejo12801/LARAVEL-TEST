@@ -2,6 +2,7 @@
 
 namespace App\Filters\V1;
 
+use App\Filters\ApiFilter;
 use Illuminate\Http\Request;
 
 
@@ -22,39 +23,13 @@ class CustomerFilter extends ApiFilter {
 
    protected function operatorMap($operator)
 {
-    switch ($operator) {
-        case 'eq':
-            return '=';
-        case 'lt':
-            return '<';
-        case 'lte':
-            return '<=';
-        case 'gt':
-            return '>';
-        case 'gte':
-            return '>=';
-        default:
-            return null;
-    }
+    ['eq' => '=',
+    'lt' => '<',
+    'lte' => '<=',
+    'gt' => '>',
+    'gte' => '>=',
+    'ne' => '!=',
+];
 }
-    public function transform(Request $request) {
-        $eloQuery = [];
-
-        foreach ($this->safeParams as $param => $operators) {
-            $query = $request->query($param);
-
-            if (!isset($query)) {
-                continue;
-            } 
-            $column = $this->columnMap[$param] ?? $param;
-
-            foreach ($operators as $operator) {
-                if(isset($query[$operator])) {
-                    $eloQuery[] = [$column, self::operatorMap($operator), $query[$operator]];
-            
-            }
-            return $eloQuery;
-        }
-}   
-}
+    
 }
