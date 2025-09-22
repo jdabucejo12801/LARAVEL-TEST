@@ -21,15 +21,13 @@ class CustomerFilter extends ApiFilter {
         'postalCode' => 'postal_code'
     ];
 
-   protected function operatorMap($operator)
-{
-    ['eq' => '=',
-    'lt' => '<',
-    'lte' => '<=',
-    'gt' => '>',
-    'gte' => '>=',
-    'ne' => '!=',
-];
-}
+    protected $operatorMap = [
+        'eq' => '=',
+        'lt' => '<',
+        'lte' => '<=',
+        'gt' => '>',
+        'gte' => '>=',
+        'ne' => '!=',
+    ];
     
 }

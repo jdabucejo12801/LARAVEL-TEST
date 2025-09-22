@@ -10,6 +10,8 @@ use App\Models\Invoice;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Filters\V1\InvoiceFilter;
+use Illuminate\Support\Arr;
+use App\Http\Requests\V1\BulkStoreInvoiceRequest;
 use Illuminate\Http\Request;
 class InvoiceController extends Controller
 {
@@ -30,6 +32,12 @@ class InvoiceController extends Controller
             
         }
     }
+
+    public function getInvoices() {
+
+     $invoices = Invoice::getInvoices();
+     return response()->json($invoices);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -46,6 +54,13 @@ class InvoiceController extends Controller
         //
     }
 
+   public function bulkStore(BulkStoreInvoiceRequest $request) {
+    $bulk = collect($request->all())->map(function($arr,$key) {
+        return Arr::except($arr,['customerId','billedDate','paidDate']);
+    });
+
+    Invoice::insert($bulk->toArray());
+    }
     /**
      * Display the specified resource.
      */

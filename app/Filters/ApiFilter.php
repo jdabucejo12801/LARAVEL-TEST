@@ -27,10 +27,10 @@ class ApiFilter {
                 if(isset($query[$operator])) {
                 $eloQuery[] = [$column, $this->operatorMap[$operator],$query[$operator]];
                 }
-               
-            
+
+
             }
-            return $eloQuery;
         }
+        return $eloQuery;
 }   
 }
